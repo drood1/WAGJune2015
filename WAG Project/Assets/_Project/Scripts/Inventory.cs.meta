@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 4f795b107df6d194c9c3a0fdccb201a9
+timeCreated: 1433717041
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - inventoryUIPrefab: {fileID: 112120, guid: 5467bd5d27e94d74889316551bea985a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

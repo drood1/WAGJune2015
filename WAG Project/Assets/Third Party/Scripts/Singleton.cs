@@ -17,6 +17,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private static object _lock = new object();
 
+    protected virtual void Awake() {
+        DontDestroyOnLoad(_instance);
+    }
+
     public static T Instance
     {
         get
@@ -44,8 +48,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                         _instance = singleton.AddComponent<T>();
                         singleton.name = "[Singleton] "+ typeof(T).ToString();
 
-                        DontDestroyOnLoad(singleton);
-
 #if LOG_ACCESSING
                         Debug.Log("[Singleton] An instance of " + typeof(T) +
                             " is needed in the scene, so '" + singleton +
@@ -60,6 +62,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 return _instance;
             }
         }
+    }
+
+    public void Wakeup() {
+        // Call to ensure that this Singleton is present in the scene.
     }
 
     private static bool applicationIsQuitting = false;
