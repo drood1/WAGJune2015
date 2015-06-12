@@ -13,7 +13,7 @@ namespace Fungus
 	 * Flowchart objects may be edited visually using the Flowchart editor window.
 	 */
 	[ExecuteInEditMode]
-	public class Flowchart : MonoBehaviour 
+	public class Flowchart : MonoBehaviour
 	{
 		/**
 		 * Scroll position of Flowchart editor window.
@@ -57,7 +57,7 @@ namespace Fungus
 		[HideInInspector]
 		[FormerlySerializedAs("selectedSequence")]
 		public Block selectedBlock;
-		
+
 		/**
 		 * Currently selected command in the Flowchart editor.
 		 */
@@ -86,7 +86,7 @@ namespace Fungus
 		 */
 		[Tooltip("Use command color when displaying the command list in the Fungus Editor window")]
 		public bool colorCommands = true;
-		
+
 		/**
 		 * Hides the Flowchart block and command components in the inspector.
 		 * Deselect to inspect the block and command components that make up the Flowchart.
@@ -119,6 +119,16 @@ namespace Fungus
 		 * Cached list of flowchart objects in the scene for fast lookup
 		 */
 		public static List<Flowchart> cachedFlowcharts = new List<Flowchart>();
+
+		/**
+		 * Flag indicating if an uninterruptable block is executing.
+		 */
+		public Block uninterruptableExecuting = null;
+
+		/**
+		 * Flag indicating if a menu is open. Stop block execution not triggered by the menu.
+		 */
+		public static bool menuOpen = false;
 
 		/**
 		 * Returns the next id to assign to a new flowchart item.
@@ -237,7 +247,7 @@ namespace Fungus
 		{
 			// Block must be a component of the Flowchart game object
 			if (block == null ||
-			    block.gameObject != gameObject) 
+			    block.gameObject != gameObject)
 			{
 				return false;
 			}
@@ -263,7 +273,7 @@ namespace Fungus
 			string baseKey = originalKey;
 
 			// Only letters and digits allowed
-			char[] arr = baseKey.Where(c => (char.IsLetterOrDigit(c) || c == '_')).ToArray(); 
+			char[] arr = baseKey.Where(c => (char.IsLetterOrDigit(c) || c == '_')).ToArray();
 			baseKey = new string(arr);
 
 			// No leading digits allowed
@@ -295,7 +305,7 @@ namespace Fungus
 						key = baseKey + suffix;
 					}
 				}
-				
+
 				if (!collision)
 				{
 					return key;
@@ -310,7 +320,7 @@ namespace Fungus
 		{
 			int suffix = 0;
 			string baseKey = originalKey.Trim();
-			
+
 			// No empty keys allowed
 			if (baseKey.Length == 0)
 			{
@@ -330,7 +340,7 @@ namespace Fungus
 					{
 						continue;
 					}
-					
+
 					if (block.blockName.Equals(key, StringComparison.CurrentCultureIgnoreCase))
 					{
 						collision = true;
@@ -338,7 +348,7 @@ namespace Fungus
 						key = baseKey + suffix;
 					}
 				}
-				
+
 				if (!collision)
 				{
 					return key;
@@ -353,15 +363,15 @@ namespace Fungus
 		{
 			int suffix = 0;
 			string baseKey = originalKey.Trim();
-			
+
 			// No empty keys allowed
 			if (baseKey.Length == 0)
 			{
 				baseKey = "New Label";
 			}
-			
+
 			Block block = ignoreLabel.parentBlock;
-			
+
 			string key = baseKey;
 			while (true)
 			{
@@ -374,7 +384,7 @@ namespace Fungus
 					{
 						continue;
 					}
-					
+
 					if (label.key.Equals(key, StringComparison.CurrentCultureIgnoreCase))
 					{
 						collision = true;
@@ -382,7 +392,7 @@ namespace Fungus
 						key = baseKey + suffix;
 					}
 				}
-				
+
 				if (!collision)
 				{
 					return key;
@@ -446,7 +456,7 @@ namespace Fungus
 			Debug.LogWarning("Boolean variable " + key + " not found.");
 			return false;
 		}
-					
+
 		/**
 		 * Sets the value of a boolean variable.
 		 * The variable must already be added to the list of variables for this Flowchart.
@@ -530,7 +540,7 @@ namespace Fungus
 			Debug.LogWarning("Float variable " + key + " not found.");
 			return 0f;
 		}
-				
+
 		/**
 		 * Sets the value of a float variable.
 		 * The variable must already be added to the list of variables for this Flowchart.
@@ -676,10 +686,10 @@ namespace Fungus
 		public virtual string SubstituteVariables(string text)
 		{
 			string subbedText = text;
-			
+
 			// Instantiate the regular expression object.
 			Regex r = new Regex("{\\$.*?}");
-			
+
 			// Match the regular expression pattern against a text string.
 			var results = r.Matches(text);
 			foreach (Match match in results)
@@ -690,7 +700,7 @@ namespace Fungus
 				foreach (Variable variable in variables)
 				{
 					if (variable.key == key)
-					{	
+					{
 						string value = variable.ToString();
 						subbedText = subbedText.Replace(match.Value, value);
 					}
@@ -709,7 +719,7 @@ namespace Fungus
 					{
 						if (variable.scope == VariableScope.Public &&
 							variable.key == key)
-						{	
+						{
 							string value = variable.ToString();
 							subbedText = subbedText.Replace(match.Value, value);
 						}
@@ -723,7 +733,7 @@ namespace Fungus
 					subbedText = subbedText.Replace(match.Value, localizedString);
 				}
 			}
-			
+
 			return subbedText;
 		}
 	}

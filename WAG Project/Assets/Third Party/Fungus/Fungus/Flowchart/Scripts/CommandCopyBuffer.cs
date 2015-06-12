@@ -5,10 +5,10 @@ namespace Fungus
 {
 
 	[AddComponentMenu("")]
-	public class CommandCopyBuffer : Block 
+	public class CommandCopyBuffer : Block
 	{
 		protected static CommandCopyBuffer instance;
-		
+
 		/**
 		 * Returns the CommandCopyBuffer singleton instance.
 		 * Will create a CommandCopyBuffer game object if none currently exists.
@@ -32,12 +32,14 @@ namespace Fungus
 					instance = go.AddComponent<CommandCopyBuffer>();
 				}
 			}
-			
+
 			return instance;
 		}
 
-		protected virtual void Start()
+		protected override void Start()
 		{
+			base.Start();
+
 			if (Application.isPlaying)
 			{
 				Destroy(this.gameObject);

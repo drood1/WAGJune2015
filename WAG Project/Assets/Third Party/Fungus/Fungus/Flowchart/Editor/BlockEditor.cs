@@ -14,7 +14,7 @@ namespace Fungus
 {
 
 	[CustomEditor (typeof(Block))]
-	public class BlockEditor : Editor 
+	public class BlockEditor : Editor
 	{
 		protected class SetEventHandlerOperation
 		{
@@ -75,14 +75,17 @@ namespace Fungus
 			Block block = target as Block;
 
 			SerializedProperty commandListProperty = serializedObject.FindProperty("commandList");
-			
+
 			if (block == flowchart.selectedBlock)
 			{
 				SerializedProperty descriptionProp = serializedObject.FindProperty("description");
 				EditorGUILayout.PropertyField(descriptionProp);
 
+				SerializedProperty interruptableProp = serializedObject.FindProperty("interruptable");
+				EditorGUILayout.PropertyField(interruptableProp);
+
 				DrawEventHandlerGUI(flowchart);
-				
+
 				UpdateIndentLevels(block);
 
 				// Make sure each command has a reference to its parent block
@@ -98,7 +101,7 @@ namespace Fungus
 				ReorderableListGUI.Title("Commands");
 				CommandListAdaptor adaptor = new CommandListAdaptor(commandListProperty, 0);
 				adaptor.nodeRect = block.nodeRect;
-				
+
 				ReorderableListFlags flags = ReorderableListFlags.HideAddButton | ReorderableListFlags.HideRemoveButtons | ReorderableListFlags.DisableContextMenu;
 
 				if (block.commandList.Count == 0)
@@ -121,7 +124,7 @@ namespace Fungus
 				if (GUIUtility.keyboardControl == 0) //Only call keyboard shortcuts when not typing in a text field
 				{
 					Event e = Event.current;
-					
+
 					// Copy keyboard shortcut
 					if (e.type == EventType.ValidateCommand && e.commandName == "Copy")
 					{
@@ -131,12 +134,12 @@ namespace Fungus
 						}
 					}
 
-					if (e.type == EventType.ExecuteCommand && e.commandName == "Copy")		
+					if (e.type == EventType.ExecuteCommand && e.commandName == "Copy")
 					{
 						actionList.Add(Copy);
 						e.Use();
 					}
-					
+
 					// Cut keyboard shortcut
 					if (e.type == EventType.ValidateCommand && e.commandName == "Cut")
 					{
@@ -151,7 +154,7 @@ namespace Fungus
 						actionList.Add(Cut);
 						e.Use();
 					}
-					
+
 					// Paste keyboard shortcut
 					if (e.type == EventType.ValidateCommand && e.commandName == "Paste")
 					{
@@ -162,12 +165,12 @@ namespace Fungus
 						}
 					}
 
-					if (e.type == EventType.ExecuteCommand && e.commandName == "Paste")		
+					if (e.type == EventType.ExecuteCommand && e.commandName == "Paste")
 					{
 						actionList.Add(Paste);
 						e.Use();
 					}
-					
+
 					// Duplicate keyboard shortcut
 					if (e.type == EventType.ValidateCommand && e.commandName == "Duplicate")
 					{
@@ -177,13 +180,13 @@ namespace Fungus
 						}
 					}
 
-					if (e.type == EventType.ExecuteCommand && e.commandName == "Duplicate")		
+					if (e.type == EventType.ExecuteCommand && e.commandName == "Duplicate")
 					{
 						actionList.Add(Copy);
 						actionList.Add(Paste);
 						e.Use();
 					}
-					
+
 					// Delete keyboard shortcut
 					if (e.type == EventType.ValidateCommand && e.commandName == "Delete")
 					{
@@ -193,23 +196,23 @@ namespace Fungus
 						}
 					}
 
-					if (e.type == EventType.ExecuteCommand && e.commandName == "Delete")		
+					if (e.type == EventType.ExecuteCommand && e.commandName == "Delete")
 					{
 						actionList.Add(Delete);
 						e.Use();
 					}
-					
+
 					// SelectAll keyboard shortcut
 					if (e.type == EventType.ValidateCommand && e.commandName == "SelectAll")
 					{
 						e.Use();
 					}
-				
-					if (e.type == EventType.ExecuteCommand && e.commandName == "SelectAll")		
+
+					if (e.type == EventType.ExecuteCommand && e.commandName == "SelectAll")
 					{
 						actionList.Add(SelectAll);
 						e.Use();
-					}				
+					}
 				}
 
 			}
@@ -231,7 +234,7 @@ namespace Fungus
 		public virtual void DrawButtonToolbar()
 		{
 			GUILayout.BeginHorizontal();
-			
+
 			// Previous Command
 			if ((Event.current.type == EventType.keyDown) && (Event.current.keyCode == KeyCode.PageUp))
 			{
@@ -246,30 +249,30 @@ namespace Fungus
 				GUI.FocusControl("dummycontrol");
 				Event.current.Use();
 			}
-			
+
 			// Up Button
 			Texture2D upIcon = Resources.Load("Icons/up") as Texture2D;
 			if (GUILayout.Button(upIcon))
 			{
 				SelectPrevious();
 			}
-			
+
 			// Down Button
 			Texture2D downIcon = Resources.Load("Icons/down") as Texture2D;
 			if (GUILayout.Button(downIcon))
 			{
 				SelectNext();
 			}
-			
+
 			GUILayout.FlexibleSpace();
-			
+
 			// Add Button
 			Texture2D addIcon = Resources.Load("Icons/add") as Texture2D;
 			if (GUILayout.Button(addIcon))
 			{
 				ShowCommandMenu();
 			}
-			
+
 			// Duplicate Button
 			Texture2D duplicateIcon = Resources.Load("Icons/duplicate") as Texture2D;
 			if (GUILayout.Button(duplicateIcon))
@@ -277,14 +280,14 @@ namespace Fungus
 				Copy();
 				Paste();
 			}
-			
+
 			// Delete Button
 			Texture2D deleteIcon = Resources.Load("Icons/delete") as Texture2D;
 			if (GUILayout.Button(deleteIcon))
 			{
 				Delete();
 			}
-			
+
 			GUILayout.EndHorizontal();
 		}
 
@@ -318,20 +321,20 @@ namespace Fungus
 				SetEventHandlerOperation noneOperation = new SetEventHandlerOperation();
 				noneOperation.block = block;
 				noneOperation.eventHandlerType = null;
-				
+
 				GenericMenu eventHandlerMenu = new GenericMenu();
 				eventHandlerMenu.AddItem(new GUIContent("None"), false, OnSelectEventHandler, noneOperation);
 
 				// Add event handlers with no category first
 				foreach (System.Type type in eventHandlerTypes)
 				{
-					EventHandlerInfoAttribute info = EventHandlerEditor.GetEventHandlerInfo(type);					
+					EventHandlerInfoAttribute info = EventHandlerEditor.GetEventHandlerInfo(type);
 					if (info.Category.Length == 0)
 					{
 						SetEventHandlerOperation operation = new SetEventHandlerOperation();
 						operation.block = block;
 						operation.eventHandlerType = type;
-						
+
 						eventHandlerMenu.AddItem(new GUIContent(info.EventHandlerName), false, OnSelectEventHandler, operation);
 					}
 				}
@@ -339,9 +342,9 @@ namespace Fungus
 				// Add event handlers with a category afterwards
 				foreach (System.Type type in eventHandlerTypes)
 				{
-					EventHandlerInfoAttribute info = EventHandlerEditor.GetEventHandlerInfo(type);					
+					EventHandlerInfoAttribute info = EventHandlerEditor.GetEventHandlerInfo(type);
 					if (info.Category.Length > 0)
-					{			
+					{
 						SetEventHandlerOperation operation = new SetEventHandlerOperation();
 						operation.block = block;
 						operation.eventHandlerType = type;
@@ -422,23 +425,23 @@ namespace Fungus
 			}
 
 			Block block = property.objectReferenceValue as Block;
-		
+
 			// Build dictionary of child blocks
 			List<GUIContent> blockNames = new List<GUIContent>();
-			
+
 			int selectedIndex = 0;
 			blockNames.Add(nullLabel);
 			Block[] blocks = flowchart.GetComponentsInChildren<Block>(true);
 			for (int i = 0; i < blocks.Length; ++i)
 			{
 				blockNames.Add(new GUIContent(blocks[i].blockName));
-				
+
 				if (block == blocks[i])
 				{
 					selectedIndex = i + 1;
 				}
 			}
-			
+
 			selectedIndex = EditorGUILayout.Popup(label, selectedIndex, blockNames.ToArray());
 			if (selectedIndex == 0)
 			{
@@ -448,7 +451,7 @@ namespace Fungus
 			{
 				block = blocks[selectedIndex - 1];
 			}
-			
+
 			property.objectReferenceValue = block;
 		}
 
@@ -458,25 +461,25 @@ namespace Fungus
 			{
 				return null;
 			}
-			
+
 			Block result = block;
-			
+
 			// Build dictionary of child blocks
 			List<GUIContent> blockNames = new List<GUIContent>();
-			
+
 			int selectedIndex = 0;
 			blockNames.Add(nullLabel);
 			Block[] blocks = flowchart.GetComponentsInChildren<Block>();
 			for (int i = 0; i < blocks.Length; ++i)
 			{
 				blockNames.Add(new GUIContent(blocks[i].name));
-				
+
 				if (block == blocks[i])
 				{
 					selectedIndex = i + 1;
 				}
 			}
-			
+
 			selectedIndex = EditorGUI.Popup(position, selectedIndex, blockNames.ToArray());
 			if (selectedIndex == 0)
 			{
@@ -486,7 +489,7 @@ namespace Fungus
 			{
 				result = blocks[selectedIndex - 1];
 			}
-			
+
 			return result;
 		}
 
@@ -504,8 +507,8 @@ namespace Fungus
 		[MenuItem("Tools/Fungus/Utilities/Export Reference Docs")]
 		protected static void ExportReferenceDocs()
 		{
-			string path = EditorUtility.SaveFolderPanel("Export Reference Docs", "", "");			
-			if(path.Length == 0) 
+			string path = EditorUtility.SaveFolderPanel("Export Reference Docs", "", "");
+			if(path.Length == 0)
 			{
 				return;
 			}
@@ -522,7 +525,7 @@ namespace Fungus
 			List<System.Type> menuTypes = EditorExtensions.FindDerivedTypes(typeof(Command)).ToList();
 			List<KeyValuePair<System.Type, CommandInfoAttribute>> filteredAttributes = GetFilteredCommandInfoAttribute(menuTypes);
 			filteredAttributes.Sort( CompareCommandAttributes );
-			
+
 			// Build list of command categories
 			List<string> commandCategories = new List<string>();
 			foreach(var keyPair in filteredAttributes)
@@ -535,7 +538,7 @@ namespace Fungus
 				}
 			}
 			commandCategories.Sort();
-			
+
 			// Output the commands in each category
 			foreach (string category in commandCategories)
 			{
@@ -543,7 +546,7 @@ namespace Fungus
 				foreach(var keyPair in filteredAttributes)
 				{
 					CommandInfoAttribute info = keyPair.Value;
-					
+
 					if (info.Category == category ||
 					    info.Category == "" && category == "Scripting")
 					{
@@ -552,9 +555,9 @@ namespace Fungus
 						markdown += GetPropertyInfo(keyPair.Key);
 					}
 				}
-				
+
 				string filePath = path + "/commands/" + category.ToLower() + "_commands.md";
-				
+
 				Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 				File.WriteAllText(filePath, markdown);
 			}
@@ -575,12 +578,12 @@ namespace Fungus
 				}
 			}
 			eventHandlerCategories.Sort();
-			
+
 			// Output the commands in each category
 			foreach (string category in eventHandlerCategories)
 			{
 				string markdown = "";
-				
+
 				foreach (System.Type type in eventHandlerTypes)
 				{
 					EventHandlerInfoAttribute info = EventHandlerEditor.GetEventHandlerInfo(type);
@@ -593,12 +596,12 @@ namespace Fungus
 						markdown += GetPropertyInfo(type);
 					}
 				}
-				
+
 				string filePath = path + "/event_handlers/" + category.ToLower() + "_events.md";
-				
+
 				Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 				File.WriteAllText(filePath, markdown);
-			}			
+			}
 		}
 
 		protected static string GetPropertyInfo(System.Type type)
@@ -655,7 +658,7 @@ namespace Fungus
 			}
 
 			GenericMenu commandMenu = new GenericMenu();
-			
+
 			// Build menu list
 			List<System.Type> menuTypes = EditorExtensions.FindDerivedTypes(typeof(Command)).ToList();
 			List<KeyValuePair<System.Type, CommandInfoAttribute>> filteredAttributes = GetFilteredCommandInfoAttribute(menuTypes);
@@ -665,7 +668,7 @@ namespace Fungus
 			foreach(var keyPair in filteredAttributes)
 			{
 				AddCommandOperation commandOperation = new AddCommandOperation();
-				
+
 				commandOperation.block = block;
 				commandOperation.commandType = keyPair.Key;
 				commandOperation.index = index;
@@ -685,11 +688,11 @@ namespace Fungus
 
 			commandMenu.ShowAsContext();
 		}
-		
+
 		protected static List<KeyValuePair<System.Type,CommandInfoAttribute>> GetFilteredCommandInfoAttribute(List<System.Type> menuTypes)
 		{
 			Dictionary<string, KeyValuePair<System.Type, CommandInfoAttribute>> filteredAttributes = new Dictionary<string, KeyValuePair<System.Type, CommandInfoAttribute>>();
-			
+
 			foreach (System.Type type in menuTypes)
 			{
 				object[] attributes = type.GetCustomAttributes(false);
@@ -699,13 +702,13 @@ namespace Fungus
 					if (infoAttr != null)
 					{
 						string dictionaryName = string.Format("{0}/{1}", infoAttr.Category, infoAttr.CommandName);
-						
+
 						int existingItemPriority = -1;
 						if (filteredAttributes.ContainsKey(dictionaryName))
 						{
 							existingItemPriority = filteredAttributes[dictionaryName].Value.Priority;
 						}
-						
+
 						if (infoAttr.Priority > existingItemPriority)
 						{
 							KeyValuePair<System.Type, CommandInfoAttribute> keyValuePair = new KeyValuePair<System.Type, CommandInfoAttribute>(type, infoAttr);
@@ -716,11 +719,11 @@ namespace Fungus
 			}
 			return filteredAttributes.Values.ToList<KeyValuePair<System.Type,CommandInfoAttribute>>();
 		}
-		
+
 		protected static void AddCommandCallback(object obj)
 		{
 			AddCommandOperation commandOperation = obj as AddCommandOperation;
-			
+
 			Block block = commandOperation.block;
 			if (block == null)
 			{
@@ -730,7 +733,7 @@ namespace Fungus
 			Flowchart flowchart = block.GetFlowchart();
 
 			flowchart.ClearSelectedCommands();
-			
+
 			Command newCommand = Undo.AddComponent(block.gameObject, commandOperation.commandType) as Command;
 			block.GetFlowchart().AddSelectedCommand(newCommand);
 			newCommand.parentBlock = block;
@@ -759,28 +762,28 @@ namespace Fungus
 			{
 				return;
 			}
-			
+
 			bool showCut = false;
 			bool showCopy = false;
 			bool showDelete = false;
 			bool showPaste = false;
-			
+
 			if (flowchart.selectedCommands.Count > 0)
 			{
 				showCut = true;
 				showCopy = true;
 				showDelete = true;
 			}
-			
+
 			CommandCopyBuffer commandCopyBuffer = CommandCopyBuffer.GetInstance();
-			
+
 			if (commandCopyBuffer.HasCommands())
 			{
 				showPaste = true;
 			}
-			
+
 			GenericMenu commandMenu = new GenericMenu();
-			
+
 			if (showCut)
 			{
 				commandMenu.AddItem (new GUIContent ("Cut"), false, Cut);
@@ -789,7 +792,7 @@ namespace Fungus
 			{
 				commandMenu.AddDisabledItem(new GUIContent ("Cut"));
 			}
-			
+
 			if (showCopy)
 			{
 				commandMenu.AddItem (new GUIContent ("Copy"), false, Copy);
@@ -798,7 +801,7 @@ namespace Fungus
 			{
 				commandMenu.AddDisabledItem(new GUIContent ("Copy"));
 			}
-			
+
 			if (showPaste)
 			{
 				commandMenu.AddItem (new GUIContent ("Paste"), false, Paste);
@@ -807,7 +810,7 @@ namespace Fungus
 			{
 				commandMenu.AddDisabledItem(new GUIContent ("Paste"));
 			}
-			
+
 			if (showDelete)
 			{
 				commandMenu.AddItem (new GUIContent ("Delete"), false, Delete);
@@ -816,15 +819,15 @@ namespace Fungus
 			{
 				commandMenu.AddDisabledItem(new GUIContent ("Delete"));
 			}
-			
+
 			commandMenu.AddSeparator("");
-			
+
 			commandMenu.AddItem (new GUIContent ("Select All"), false, SelectAll);
 			commandMenu.AddItem (new GUIContent ("Select None"), false, SelectNone);
-			
+
 			commandMenu.ShowAsContext();
 		}
-		
+
 		protected void SelectAll()
 		{
 			Block block = target as Block;
@@ -835,7 +838,7 @@ namespace Fungus
 			{
 				return;
 			}
-			
+
 			flowchart.ClearSelectedCommands();
 			Undo.RecordObject(flowchart, "Select All");
 			foreach (Command command in flowchart.selectedBlock.commandList)
@@ -845,7 +848,7 @@ namespace Fungus
 
 			Repaint();
 		}
-		
+
 		protected void SelectNone()
 		{
 			Block block = target as Block;
@@ -856,19 +859,19 @@ namespace Fungus
 			{
 				return;
 			}
-			
+
 			Undo.RecordObject(flowchart, "Select None");
 			flowchart.ClearSelectedCommands();
 
 			Repaint();
 		}
-		
+
 		protected void Cut()
 		{
 			Copy();
 			Delete();
 		}
-		
+
 		protected void Copy()
 		{
 			Block block = target as Block;
@@ -879,7 +882,7 @@ namespace Fungus
 			{
 				return;
 			}
-			
+
 			CommandCopyBuffer commandCopyBuffer = CommandCopyBuffer.GetInstance();
 			commandCopyBuffer.Clear();
 
@@ -898,7 +901,7 @@ namespace Fungus
 				}
 			}
 		}
-		
+
 		protected void Paste()
 		{
 			Block block = target as Block;
@@ -909,9 +912,9 @@ namespace Fungus
 			{
 				return;
 			}
-			
+
 			CommandCopyBuffer commandCopyBuffer = CommandCopyBuffer.GetInstance();
-			
+
 			// Find where to paste commands in block (either at end or after last selected command)
 			int pasteIndex = flowchart.selectedBlock.commandList.Count;
 			if (flowchart.selectedCommands.Count > 0)
@@ -919,7 +922,7 @@ namespace Fungus
 				for (int i = 0; i < flowchart.selectedBlock.commandList.Count; ++i)
 				{
 					Command command = flowchart.selectedBlock.commandList[i];
-					
+
 					foreach (Command selectedCommand in flowchart.selectedCommands)
 					{
 						if (command == selectedCommand)
@@ -929,7 +932,7 @@ namespace Fungus
 					}
 				}
 			}
-			
+
 			foreach (Command command in commandCopyBuffer.GetCommands())
 			{
 				// Using the Editor copy / paste functionality instead instead of reflection
@@ -954,7 +957,7 @@ namespace Fungus
 
 			Repaint();
 		}
-		
+
 		protected void Delete()
 		{
 			Block block = target as Block;
@@ -974,7 +977,7 @@ namespace Fungus
 					if (command == selectedCommand)
 					{
 						command.OnCommandRemoved(block);
-						
+
 						Undo.RecordObject(flowchart.selectedBlock, "Delete");
 						flowchart.selectedBlock.commandList.RemoveAt(i);
 						Undo.DestroyObjectImmediate(command);
@@ -983,24 +986,24 @@ namespace Fungus
 					}
 				}
 			}
-			
+
 			Undo.RecordObject(flowchart, "Delete");
 			flowchart.ClearSelectedCommands();
-			
+
 			if (lastSelectedIndex < flowchart.selectedBlock.commandList.Count)
 			{
 				Command nextCommand = flowchart.selectedBlock.commandList[lastSelectedIndex];
 				block.GetFlowchart().AddSelectedCommand(nextCommand);
 			}
-			
+
 			Repaint();
 		}
-		
+
 		protected void SelectPrevious()
 		{
 			Block block = target as Block;
 			Flowchart flowchart = block.GetFlowchart();
-			
+
 			int firstSelectedIndex = flowchart.selectedBlock.commandList.Count;
 			bool firstSelectedCommandFound = false;
 			if (flowchart.selectedCommands.Count > 0)
@@ -1008,7 +1011,7 @@ namespace Fungus
 				for (int i = 0; i < flowchart.selectedBlock.commandList.Count; i++)
 				{
 					Command commandInBlock = flowchart.selectedBlock.commandList[i];
-					
+
 					foreach (Command selectedCommand in flowchart.selectedCommands)
 					{
 						if (commandInBlock == selectedCommand)
@@ -1032,7 +1035,7 @@ namespace Fungus
 				flowchart.ClearSelectedCommands();
 				flowchart.AddSelectedCommand(flowchart.selectedBlock.commandList[firstSelectedIndex-1]);
 			}
-			
+
 			Repaint();
 		}
 
@@ -1040,14 +1043,14 @@ namespace Fungus
 		{
 			Block block = target as Block;
 			Flowchart flowchart = block.GetFlowchart();
-			
+
 			int lastSelectedIndex = -1;
 			if (flowchart.selectedCommands.Count > 0)
 			{
 				for (int i = 0; i < flowchart.selectedBlock.commandList.Count; i++)
 				{
 					Command commandInBlock = flowchart.selectedBlock.commandList[i];
-					
+
 					foreach (Command selectedCommand in flowchart.selectedCommands)
 					{
 						if (commandInBlock == selectedCommand)
@@ -1062,9 +1065,9 @@ namespace Fungus
 				flowchart.ClearSelectedCommands();
 				flowchart.AddSelectedCommand(flowchart.selectedBlock.commandList[lastSelectedIndex+1]);
 			}
-			
+
 			Repaint();
 		}
 	}
-	
+
 }

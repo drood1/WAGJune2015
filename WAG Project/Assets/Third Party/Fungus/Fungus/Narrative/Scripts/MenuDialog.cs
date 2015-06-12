@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Fungus
 {
-	
+
 	public class MenuDialog : MonoBehaviour
 	{
 		// Currently active Menu Dialog used to display Menu options
@@ -26,7 +26,7 @@ namespace Fungus
 				{
 					activeMenuDialog = md;
 				}
-				
+
 				if (activeMenuDialog == null)
 				{
 					// Auto spawn a menu dialog object from the prefab
@@ -40,7 +40,7 @@ namespace Fungus
 					}
 				}
 			}
-			
+
 			return activeMenuDialog;
 		}
 
@@ -64,18 +64,20 @@ namespace Fungus
 			// The canvas may fail to update if the menu dialog is enabled in the first game frame.
 			// To fix this we just need to force a canvas update when the object is enabled.
 			Canvas.ForceUpdateCanvases();
+
+			Flowchart.menuOpen = true;
 		}
 
 		protected virtual void Clear()
 		{
 			StopAllCoroutines();
 
-			Button[] optionButtons = GetComponentsInChildren<Button>();						
+			Button[] optionButtons = GetComponentsInChildren<Button>();
 			foreach (UnityEngine.UI.Button button in optionButtons)
 			{
 				button.onClick.RemoveAllListeners();
 			}
-			
+
 			foreach (UnityEngine.UI.Button button in optionButtons)
 			{
 				if (button != null)
@@ -106,9 +108,9 @@ namespace Fungus
 					{
 						textComponent.text = text;
 					}
-					
+
 					Block block = targetBlock;
-					
+
 					button.onClick.AddListener(delegate {
 
 						StopAllCoroutines(); // Stop timeout
@@ -126,6 +128,8 @@ namespace Fungus
 
 							gameObject.SetActive(false);
 
+							Flowchart.menuOpen = false;
+
 							block.Execute();
 						}
 					});
@@ -134,7 +138,7 @@ namespace Fungus
 					break;
 				}
 			}
-			
+
 			return addedOption;
 		}
 
@@ -176,9 +180,9 @@ namespace Fungus
 		protected virtual IEnumerator WaitForTimeout(float timeoutDuration, Block targetBlock)
 		{
 			float elapsedTime = 0;
-			
+
 			Slider timeoutSlider = GetComponentInChildren<Slider>();
-			
+
 			while (elapsedTime < timeoutDuration)
 			{
 				if (timeoutSlider != null)
@@ -186,12 +190,12 @@ namespace Fungus
 					float t = 1f - elapsedTime / timeoutDuration;
 					timeoutSlider.value = t;
 				}
-				
+
 				elapsedTime += Time.deltaTime;
-				
+
 				yield return null;
 			}
-			
+
 			Clear();
 			gameObject.SetActive(false);
 
@@ -203,5 +207,5 @@ namespace Fungus
 			}
 		}
 	}
-	
+
 }

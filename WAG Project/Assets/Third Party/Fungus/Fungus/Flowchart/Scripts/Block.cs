@@ -9,7 +9,7 @@ namespace Fungus
 	[ExecuteInEditMode]
 	[RequireComponent(typeof(Flowchart))]
 	[AddComponentMenu("")]
-	public class Block : Node 
+	public class Block : Node
 	{
 		public enum ExecutionState
 		{
@@ -30,6 +30,9 @@ namespace Fungus
 		[TextArea(2, 5)]
 		[Tooltip("Description text to display under the block node")]
 		public string description = "";
+
+		[Tooltip("Whether or not the flows in this block can be interrupted")]
+		public bool interruptable = true;
 
 		[Tooltip("An optional Event Handler which can execute the block when an event occurs")]
 		public EventHandler eventHandler;
@@ -74,6 +77,11 @@ namespace Fungus
 				command.parentBlock = this;
 				command.commandIndex = index++;
 			}
+		}
+
+		protected virtual void Start()
+		{
+			Messenger.AddListener("ExecutingBlock", OnExecutingBlock);
 		}
 
 #if UNITY_EDITOR
@@ -123,10 +131,32 @@ namespace Fungus
 			return executionCount;
 		}
 
+		private void OnExecutingBlock()
+		{
+			executionState = ExecutionState.Idle;
+			activeCommand = null;
+		}
+
 		public virtual bool Execute(Action onComplete = null)
 		{
+			// Debug.Log("Trying to execute \"" + blockName + "\"");
+
 			if (executionState != ExecutionState.Idle)
 			{
+				return false;
+			}
+
+			Flowchart flowchart = GetFlowchart();
+			if (flowchart.uninterruptableExecuting &&
+			    flowchart.uninterruptableExecuting.IsExecuting())
+			{
+				Debug.Log("\"" + blockName + "\" blocked by an uninterruptable Block!");
+				return false;
+			}
+
+			if (Flowchart.menuOpen)
+			{
+				Debug.Log("\"" + blockName + "\" blocked by an open menu!");
 				return false;
 			}
 
@@ -138,8 +168,15 @@ namespace Fungus
 
 		protected virtual IEnumerator ExecuteBlock(Action onComplete = null)
 		{
+			Messenger.Broadcast("ExecutingBlock");
+
 			Flowchart flowchart = GetFlowchart();
 			executionState = ExecutionState.Executing;
+
+			if (!interruptable)
+			{
+				flowchart.uninterruptableExecuting = this;
+			}
 
 			#if UNITY_EDITOR
 			// Select the executing block & the first command
@@ -163,7 +200,7 @@ namespace Fungus
 
 				// Skip disabled commands, comments and labels
 				while (i < commandList.Count &&
-				       (!commandList[i].enabled || 
+				       (!commandList[i].enabled ||
 				 		commandList[i].GetType() == typeof(Comment) ||
 				 		commandList[i].GetType() == typeof(Label)))
 				{
@@ -221,6 +258,11 @@ namespace Fungus
 				command.isExecuting = false;
 			}
 
+			if (flowchart.uninterruptableExecuting == this)
+			{
+				flowchart.uninterruptableExecuting = null;
+			}
+			// Debug.Log(blockName + " going to idle");
 			executionState = ExecutionState.Idle;
 			activeCommand = null;
 
@@ -232,6 +274,7 @@ namespace Fungus
 
 		public virtual void Stop()
 		{
+			Debug.Log("Stop");
 			// This will cause the execution loop to break on the next iteration
 			jumpToCommandIndex = int.MaxValue;
 		}
