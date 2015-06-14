@@ -81,7 +81,9 @@ namespace Fungus
 
 		protected virtual void Start()
 		{
-			Messenger.AddListener("ExecutingBlock", OnExecutingBlock);
+			if (Application.isPlaying) {
+				Messenger.AddListener("ExecutingBlock", OnExecutingBlock);
+			}
 		}
 
 #if UNITY_EDITOR
@@ -168,7 +170,9 @@ namespace Fungus
 
 		protected virtual IEnumerator ExecuteBlock(Action onComplete = null)
 		{
-			Messenger.Broadcast("ExecutingBlock");
+			if (Application.isPlaying) {
+				Messenger.Broadcast("ExecutingBlock");
+			}
 
 			Flowchart flowchart = GetFlowchart();
 			executionState = ExecutionState.Executing;
