@@ -7,23 +7,23 @@ using System;
 namespace Fungus
 {
 
-	[CommandInfo("Flow", 
-	             "Call", 
+	[CommandInfo("Flow",
+	             "Call",
 	             "Execute another block in the same Flowchart as the command, or in a different Flowchart.")]
 	[AddComponentMenu("")]
 	public class Call : Command
-	{	
+	{
 		[Tooltip("Flowchart which contains the block to execute. If none is specified then the current Flowchart is used.")]
 		public Flowchart targetFlowchart;
 
 		[FormerlySerializedAs("targetSequence")]
 		[Tooltip("Block to start executing")]
 		public Block targetBlock;
-	
+
 		public enum CallMode
 		{
-			Stop,				// Stop executing the current block after calling 
-			Continue,			// Continue executing the current block after calling 
+			Stop,				// Stop executing the current block after calling
+			Continue,			// Continue executing the current block after calling
 			WaitUntilFinished	// Wait until the called block finishes executing, then continue executing current block
 		}
 
@@ -57,11 +57,16 @@ namespace Fungus
 				if (targetFlowchart == null ||
 				    targetFlowchart == GetFlowchart())
 				{
-					// If the executing block is currently selected then follow the execution 
+					// If the executing block is currently selected then follow the execution
 					// onto the next block in the inspector.
 					if (flowchart.selectedBlock == parentBlock)
 					{
 						flowchart.selectedBlock = targetBlock;
+					}
+
+					if (!parentBlock.interruptable)
+					{
+						flowchart.uninterruptableExecuting = null;
 					}
 
 					targetBlock.Execute(onComplete);
@@ -88,9 +93,9 @@ namespace Fungus
 			if (targetBlock != null)
 			{
 				connectedBlocks.Add(targetBlock);
-			}		
+			}
 		}
-		
+
 		public override string GetSummary()
 		{
 			string summary = "";
