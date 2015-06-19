@@ -278,7 +278,7 @@ namespace Fungus
 
 		public virtual void Stop()
 		{
-			Debug.Log("Stop");
+			Debug.Log("\"" + blockName + "\" is stopping.");
 			// This will cause the execution loop to break on the next iteration
 			jumpToCommandIndex = int.MaxValue;
 		}
