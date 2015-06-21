@@ -55,7 +55,8 @@ ModelImporter:
     4300002: cover
     4300004: pages
     7400000: idle
-    7400002: open
+    7400002: opening
+    7400004: open
     9500000: //RootNode
     11100000: //RootNode
     13700000: clasp
@@ -151,9 +152,79 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: open
+      name: opening
       takeName: Take 001
       firstFrame: 10
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CTRL_Book
+        weight: 1
+      - path: mesh
+        weight: 1
+      - path: mesh/clasp
+        weight: 1
+      - path: mesh/cover
+        weight: 1
+      - path: mesh/pages
+        weight: 1
+      - path: spine
+        weight: 1
+      - path: spine/B_spine0
+        weight: 1
+      - path: spine/B_spine0/B_spine1
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4/clasp5
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4/clasp5/clasp6
+        weight: 1
+      - path: spine/F_spine0
+        weight: 1
+      - path: spine/F_spine0/F_spine1
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover/F_star0
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover/F_star0/F_star1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: open
+      takeName: Take 001
+      firstFrame: 110
       lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
