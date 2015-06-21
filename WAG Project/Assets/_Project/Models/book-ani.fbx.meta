@@ -1,0 +1,264 @@
+fileFormatVersion: 2
+guid: a46a35e80eafd3e47b7b08dcb3313cb6
+timeCreated: 1434903181
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: B_cover
+    100002: B_spine0
+    100004: B_spine1
+    100006: //RootNode
+    100008: clasp
+    100010: clasp0
+    100012: clasp1
+    100014: clasp2
+    100016: clasp3
+    100018: clasp4
+    100020: clasp5
+    100022: clasp6
+    100024: cover
+    100026: CTRL_Book
+    100028: F_cover
+    100030: F_spine0
+    100032: F_spine1
+    100034: F_star0
+    100036: F_star1
+    100038: mesh
+    100040: pages
+    100042: spine
+    400000: B_cover
+    400002: B_spine0
+    400004: B_spine1
+    400006: //RootNode
+    400008: clasp
+    400010: clasp0
+    400012: clasp1
+    400014: clasp2
+    400016: clasp3
+    400018: clasp4
+    400020: clasp5
+    400022: clasp6
+    400024: cover
+    400026: CTRL_Book
+    400028: F_cover
+    400030: F_spine0
+    400032: F_spine1
+    400034: F_star0
+    400036: F_star1
+    400038: mesh
+    400040: pages
+    400042: spine
+    2300000: pages
+    3300000: pages
+    4300000: clasp
+    4300002: cover
+    4300004: pages
+    7400000: idle
+    7400002: open
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: clasp
+    13700002: cover
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 4
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CTRL_Book
+        weight: 1
+      - path: mesh
+        weight: 1
+      - path: mesh/clasp
+        weight: 1
+      - path: mesh/cover
+        weight: 1
+      - path: mesh/pages
+        weight: 1
+      - path: spine
+        weight: 1
+      - path: spine/B_spine0
+        weight: 1
+      - path: spine/B_spine0/B_spine1
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4/clasp5
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4/clasp5/clasp6
+        weight: 1
+      - path: spine/F_spine0
+        weight: 1
+      - path: spine/F_spine0/F_spine1
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover/F_star0
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover/F_star0/F_star1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: open
+      takeName: Take 001
+      firstFrame: 10
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CTRL_Book
+        weight: 1
+      - path: mesh
+        weight: 1
+      - path: mesh/clasp
+        weight: 1
+      - path: mesh/cover
+        weight: 1
+      - path: mesh/pages
+        weight: 1
+      - path: spine
+        weight: 1
+      - path: spine/B_spine0
+        weight: 1
+      - path: spine/B_spine0/B_spine1
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4/clasp5
+        weight: 1
+      - path: spine/B_spine0/B_spine1/B_cover/clasp0/clasp1/clasp2/clasp3/clasp4/clasp5/clasp6
+        weight: 1
+      - path: spine/F_spine0
+        weight: 1
+      - path: spine/F_spine0/F_spine1
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover/F_star0
+        weight: 1
+      - path: spine/F_spine0/F_spine1/F_cover/F_star0/F_star1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
