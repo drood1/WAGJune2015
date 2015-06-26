@@ -21,10 +21,18 @@ public class CollisionTriggerEffects : TriggerEffects
 
     }
 
+    // 3D Collision
     private void OnCollisionEnter(Collision collision) {
         StartEventIfMatch(collision.collider.gameObject);
     }
 
+    public void OnCollisionStay(Collision other) {
+        if (triggerOnStay) {
+            StartEventIfMatch(other.gameObject);
+        }
+    }
+
+    // 3D Trigger
     private void OnTriggerEnter(Collider other) {
         StartEventIfMatch(other.gameObject);
     }
@@ -33,6 +41,29 @@ public class CollisionTriggerEffects : TriggerEffects
         if (triggerOnStay) {
             StartEventIfMatch(other.gameObject);
         }
+    }
+
+    // 2D Collision
+    public void OnCollisionEnter2D(Collision2D collision) {
+        StartEventIfMatch(collision.collider.gameObject);
+    }
+
+    public void OnCollisionStay2D(Collision2D other) {
+        if (triggerOnStay) {
+            StartEventIfMatch(other.gameObject);
+        }
+    }
+
+    // 2D Trigger
+    public void OnTriggerEnter2D(Collider2D other) {
+        StartEventIfMatch(other.gameObject);
+    }
+
+    public void OnTriggerStay2D(Collider2D other) {
+        if (triggerOnStay) {
+            StartEventIfMatch(other.gameObject);
+        }
+
     }
 
     protected virtual void StartEventIfMatch(GameObject collisionObject) {

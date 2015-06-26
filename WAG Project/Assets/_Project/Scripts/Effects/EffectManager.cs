@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class EffectManager : MonoBehaviour
 {
+    [SerializeField] private float gameStartDelay = 0f;
+
     [SerializeField] private bool onlyExecuteOnce = false;
     private Effect[] effects;
 
@@ -25,7 +27,9 @@ public class EffectManager : MonoBehaviour
 
     // Triggers all effects on this object.
     public void StartEvent() {
-        if (!enabled || (onlyExecuteOnce && executed)) { return; }
+        if (!enabled || (onlyExecuteOnce && executed) || Time.realtimeSinceStartup < gameStartDelay) {
+            return;
+        }
 
         foreach (Effect effect in effects) {
             effect.TriggerEffect();
