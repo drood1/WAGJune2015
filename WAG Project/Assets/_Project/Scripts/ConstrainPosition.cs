@@ -12,7 +12,7 @@ public class ConstrainPosition : MonoBehaviour
     [SerializeField] private Vector3 minPosition;
     [SerializeField] private Vector3 maxPosition;
 
-    private static readonly Color gizmoColorSelected = new Color(1f, 0.3f, 0.4f);
+    private static readonly Color gizmoColorSelected = new Color(1f, 0.3f, 0.4f, 0.4f);
     private static readonly Color gizmoColorDefault = new Color(0.6f, 0.2f, 0.2f);
 
     private Vector3 size {
@@ -61,6 +61,6 @@ public class ConstrainPosition : MonoBehaviour
 
     public void OnDrawGizmosSelected() {
         Gizmos.color = gizmoColorSelected;
-        Gizmos.DrawWireCube(worldCenter, size);
+        Gizmos.DrawCube(worldCenter, size);
     }
 }
