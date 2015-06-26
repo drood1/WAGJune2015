@@ -22,6 +22,13 @@ namespace Fungus
 		[Tooltip("Time object takes to return to its starting position")]
 		public float returnDuration = 1f;
 
+		[Tooltip("Sound effect clips to play when drag is started")]
+		public AudioClip[] soundClips;
+
+		[Range(0,1)]
+		[Tooltip("Volume level of the sound effect")]
+		public float volume = 1;
+
 		protected Vector3 startingPosition;
 
 		protected bool updatePosition = false;
@@ -34,6 +41,16 @@ namespace Fungus
 			foreach (DragStarted handler in GetHandlers<DragStarted>())
 			{
 				handler.OnDragStarted(this);
+			}
+
+			if (dragEnabled && soundClips.Length > 0)
+			{
+				MusicController musicController = MusicController.GetInstance();
+				if (musicController != null)
+				{
+					AudioClip soundClip = soundClips[Random.Range(0, soundClips.Length - 1)];
+					musicController.PlaySound(soundClip, volume);
+				}
 			}
 		}
 
