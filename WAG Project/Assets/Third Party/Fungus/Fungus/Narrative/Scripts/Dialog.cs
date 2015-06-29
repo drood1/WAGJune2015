@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace Fungus
 {
-	
-	public class Dialog : MonoBehaviour 
+
+	public class Dialog : MonoBehaviour
 	{
 		public static Character speakingCharacter;
 		public static string prevStoryText;
-		
+
 		public float writingSpeed = 60;
 		public AudioClip writingSound;
 		[Range(0,1)]
@@ -30,10 +30,10 @@ namespace Fungus
 		protected Vector2 endPosition;
 		public float moveSpeed = 1000f;
 		public LeanTweenType moveEaseType;
-		
+
 		[Tooltip("Click anywhere on screen to continue when set to true, or only on dialog when false.")]
 		public bool clickAnywhere = true;
-		
+
 		public Canvas dialogCanvas;
 		public Text nameText;
 		public Text storyText;
@@ -52,8 +52,8 @@ namespace Fungus
 
 		protected AudioSource voiceOverAudio;
 
-		// The current target writing volume to move towards 
-		protected float targetWritingVolume; 
+		// The current target writing volume to move towards
+		protected float targetWritingVolume;
 
 		protected virtual void LateUpdate()
 		{
@@ -62,7 +62,7 @@ namespace Fungus
 			if (clickCooldownTimer > 0f)
 			{
 				clickCooldownTimer -= Time.deltaTime;
-				clickCooldownTimer = Mathf.Max(0, clickCooldownTimer); 
+				clickCooldownTimer = Mathf.Max(0, clickCooldownTimer);
 			}
 
 			if (clickCooldownTimer == 0f &&
@@ -82,7 +82,7 @@ namespace Fungus
 				{
 					audio.Play();
 				}
-	
+
 				if (targetWritingVolume > audio.volume)
 				{
 					audio.volume = targetWritingVolume;
@@ -173,7 +173,7 @@ namespace Fungus
 			}
 			);
 		}
-		
+
 		public virtual void FadeOutDialog()
 		{
 			CanvasGroup canvasGroup = dialogCanvas.GetComponent<CanvasGroup>();
@@ -212,7 +212,7 @@ namespace Fungus
 			}
 			);
 		}
-		
+
 		public virtual void SetCharacter(Character character, Flowchart flowchart = null)
 		{
 			if (character == null)
@@ -227,7 +227,7 @@ namespace Fungus
 			{
 				Character prevSpeakingCharacter = speakingCharacter;
 				speakingCharacter = character;
-				
+
 				// Dim portraits of non-speaking characters
 				foreach (Stage s in Stage.activeStages)
 				{
@@ -249,7 +249,7 @@ namespace Fungus
 						}
 					}
 				}
-				
+
 				string characterName = character.nameText;
 
 				if (characterName == "")
@@ -257,18 +257,18 @@ namespace Fungus
 					// Use game object name as default
 					characterName = character.name;
 				}
-				
+
 				if (flowchart != null)
 				{
 					characterName = flowchart.SubstituteVariables(characterName);
 				}
-				
+
 				characterTypingSound = character.soundEffect;
-				
+
 				SetCharacterName(characterName, character.nameColor);
 			}
 		}
-		
+
 		public virtual void SetCharacterImage(Sprite image)
 		{
 			if (characterImage != null)
@@ -284,7 +284,7 @@ namespace Fungus
 				}
 			}
 		}
-		
+
 		public virtual void SetCharacterName(string name, Color color)
 		{
 			if (nameText != null)
@@ -387,7 +387,7 @@ namespace Fungus
 					yield return StartCoroutine(WaitForInput(null));
 					OnWaitForInputTag(false);
 					break;
-					
+
 				case TokenType.WaitForInputAndClear:
 					OnWaitForInputTag(true);
 					yield return StartCoroutine(WaitForInput(null));
@@ -396,7 +396,7 @@ namespace Fungus
 					dialogText.Clear();
 					StopVoiceOver();
 					break;
-					
+
 				case TokenType.WaitOnPunctuationStart:
 					float newPunctuationPause = 0f;
 					if (!Single.TryParse(token.param, out newPunctuationPause))
@@ -408,11 +408,11 @@ namespace Fungus
 				case TokenType.WaitOnPunctuationEnd:
 					dialogText.punctuationPause = punctuationPause;
 					break;
-					
+
 				case TokenType.Clear:
 					dialogText.Clear();
 					break;
-					
+
 				case TokenType.SpeedStart:
 					float newSpeed = 0;
 					if (!Single.TryParse(token.param, out newSpeed))
@@ -421,11 +421,11 @@ namespace Fungus
 					}
 					dialogText.writingSpeed = newSpeed;
 					break;
-					
+
 				case TokenType.SpeedEnd:
 					dialogText.writingSpeed = writingSpeed;
 					break;
-					
+
 				case TokenType.Exit:
 					if (onExitTag != null)
 					{
@@ -434,7 +434,7 @@ namespace Fungus
 						onExitTag();
 					}
 					yield break;
-					
+
 				case TokenType.Message:
 					Flowchart.BroadcastFungusMessage(token.param);
 					break;
@@ -537,7 +537,7 @@ namespace Fungus
 			{
 				onWritingComplete();
 			}
-			
+
 			yield break;
 		}
 
@@ -556,22 +556,22 @@ namespace Fungus
 		{
 			iTween.ShakePosition(this.gameObject, new Vector3(0f, intensity, 0f), 0.5f);
 		}
-		
+
 		protected virtual void HorizontalPunch(float intensity)
 		{
 			iTween.ShakePosition(this.gameObject, new Vector3(intensity, 0f, 0f), 0.5f);
 		}
-		
+
 		protected virtual void Shake(float intensity)
 		{
 			iTween.ShakePosition(this.gameObject, new Vector3(intensity, intensity, 0f), 0.5f);
 		}
-		
+
 		protected virtual void Shiver(float intensity)
 		{
 			iTween.ShakePosition(this.gameObject, new Vector3(intensity, intensity, 0f), 1f);
 		}
-		
+
 		protected virtual void Flash(float duration)
 		{
 			CameraController cameraController = CameraController.GetInstance();
@@ -581,7 +581,7 @@ namespace Fungus
 				cameraController.Fade(0f, duration, null);
 			});
 		}
-		
+
 		public virtual void Clear()
 		{
 			ClearStoryText();
@@ -597,7 +597,7 @@ namespace Fungus
 			// Kill any active write coroutine
 			StopAllCoroutines();
 		}
-		
+
 		protected virtual void ClearStoryText()
 		{
 			if (storyText != null)
@@ -649,7 +649,7 @@ namespace Fungus
 				timer -= Time.deltaTime;
 				yield return null;
 			}
-			
+
 			wasPointerClicked = false;
 		}
 
@@ -682,5 +682,5 @@ namespace Fungus
 			}
 		}
 	}
-	
+
 }
