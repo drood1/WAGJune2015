@@ -61,6 +61,7 @@ ModelImporter:
     11100000: //RootNode
     13700000: clasp
     13700002: cover
+    13700004: pages
   materials:
     importMaterials: 0
     materialName: 0
