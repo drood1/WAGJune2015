@@ -120,6 +120,9 @@ namespace Fungus
 			{
 				type = TokenType.ColorStart;
 				paramText = tag.Substring(6, tag.Length - 6);
+				if (paramText == "blue") {
+					paramText = "#00bff3";
+				}
 			}
 			else if (tag == "/color")
 			{
