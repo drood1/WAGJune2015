@@ -35,6 +35,9 @@ namespace Fungus
 		public bool clickAnywhere = true;
 
 		public Canvas dialogCanvas;
+		public Image messageImage;
+		public Sprite messageSpriteName;
+		public Sprite messageSpriteNoName;
 		public Text nameText;
 		public Text storyText;
 		public Image characterImage;
@@ -221,6 +224,8 @@ namespace Fungus
 					characterImage.gameObject.SetActive(false);
 				if (nameText != null)
 					nameText.text = "";
+				if (messageImage != null)
+					messageImage.sprite = messageSpriteNoName;
 				characterTypingSound = null;
 			}
 			else
@@ -291,6 +296,13 @@ namespace Fungus
 			{
 				nameText.text = name;
 				nameText.color = color;
+				if (messageImage != null)
+					messageImage.sprite = messageSpriteName;
+			}
+			else
+			{
+				if (messageImage != null)
+					messageImage.sprite = messageSpriteNoName;
 			}
 		}
 
